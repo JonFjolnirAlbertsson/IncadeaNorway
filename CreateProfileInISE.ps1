@@ -22,6 +22,10 @@ PS >"
     }   
 }
 
+if (-not($psise)) {
+    break
+} 
+
 $code =
 {
 
@@ -66,15 +70,30 @@ $psISE.CurrentPowerShellTab.AddOnsMenu.Submenus.Add(''Load NAV 2016 CmdLets'',$c
 
 $code =
 {
-   Import-Module "${env:ProgramFiles(x86)}\Microsoft Dynamics NAV\90\RoleTailored Client\Microsoft.Dynamics.Nav.Model.Tools.psd1" -WarningAction SilentlyContinue | out-null
-   Import-Module "$env:ProgramFiles\Microsoft Dynamics NAV\90\Service\NavAdminTool.ps1" -WarningAction SilentlyContinue | Out-Null
-   Import-Module "${env:ProgramFiles(x86)}\Microsoft Dynamics NAV\90\RoleTailored Client\Microsoft.Dynamics.Nav.Apps.Tools.psd1" -WarningAction SilentlyContinue | Out-Null
-   Write-Host ''get-Command -Module ''Microsoft.Dynamics.Nav.*'''' -ForeGroundColor Yellow
-   get-Command -Module ''Microsoft.Dynamics.Nav.*''
+ Import-Module "${env:ProgramFiles(x86)}\Microsoft Dynamics NAV\90\RoleTailored Client\Microsoft.Dynamics.Nav.Model.Tools.psd1" -WarningAction SilentlyContinue | out-null
+ Import-Module "$env:ProgramFiles\Microsoft Dynamics NAV\90\Service\NavAdminTool.ps1" -WarningAction SilentlyContinue | Out-Null
+ Import-Module "${env:ProgramFiles(x86)}\Microsoft Dynamics NAV\90\RoleTailored Client\Microsoft.Dynamics.Nav.Apps.Tools.psd1" -WarningAction SilentlyContinue | Out-Null
+ Write-Host ''get-Command -Module ''Microsoft.Dynamics.Nav.*'''' -ForeGroundColor Yellow
+ get-Command -Module ''Microsoft.Dynamics.Nav.*''
 
-   Import-module (Join-Path ''C:\GitHub\Cloud.Ready.Software.PowerShell\PSModules'' ''LoadModules.ps1'')  
-   Import-module (Join-Path ''C:\GitHub\SI-Data'' ''LoadModules.ps1'')    
+ Import-module (Join-Path ''C:\GitHub\Cloud.Ready.Software.PowerShell\PSModules'' ''LoadModules.ps1'')  
+ Import-module (Join-Path ''C:\GitHub\IncadeaNorway'' ''LoadModules.ps1'')    
 }
+$code =
+{
+ Import-Module "${env:ProgramFiles(x86)}\Microsoft Dynamics NAV\100\RoleTailored Client\Microsoft.Dynamics.Nav.Model.Tools.psd1" -WarningAction SilentlyContinue | out-null
+ Import-Module "$env:ProgramFiles\Microsoft Dynamics NAV\100\Service\NavAdminTool.ps1" -WarningAction SilentlyContinue | Out-Null
+ Import-Module "${env:ProgramFiles(x86)}\Microsoft Dynamics NAV\100\RoleTailored Client\Microsoft.Dynamics.Nav.Apps.Tools.psd1" -WarningAction SilentlyContinue | Out-Null
+
+
+
+ Clear-Host
+ Write-Host ''get-Command -Module ''Microsoft.Dynamics.Nav.*'''' -ForeGroundColor Yellow
+ get-Command -Module ''Microsoft.Dynamics.Nav.*''
+ Import-module (Join-Path ''C:\GitHub\Cloud.Ready.Software.PowerShell\PSModules'' ''LoadModules.ps1'')  
+ Import-module (Join-Path ''C:\GitHub\IncadeaNorway'' ''LoadModules.ps1'')  
+}
+$psISE.CurrentPowerShellTab.AddOnsMenu.Submenus.Add(''Load NAV 2017 CmdLets'',$code,$null)
 $psISE.CurrentPowerShellTab.AddOnsMenu.Submenus.Add(''Start ISE Steroids'',$code,$null)
 
 $code =
