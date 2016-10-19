@@ -91,9 +91,9 @@ $psISE.CurrentPowerShellTab.AddOnsMenu.Submenus.Add(''Force Import Cloud Ready S
 
 $code =
 {
-  Import-module (Join-Path ''C:\GitHub\SI-Data'' ''LoadModules.ps1'')  
+  Import-module (Join-Path ''C:\GitHub\IncadeaNorway'' ''LoadModules.ps1'')  
 }
-$psISE.CurrentPowerShellTab.AddOnsMenu.Submenus.Add(''Force Import SI-Data Modules'',$code,$null)
+$psISE.CurrentPowerShellTab.AddOnsMenu.Submenus.Add(''Force Import Incadea Norge AS Modules'',$code,$null)
 
 '
 
