@@ -22,7 +22,7 @@ foreach ($user in $list)
     {
         $navuser = Get-NAVServerUser -ServerInstance $NavServerName |  where-Object WindowsSecurityID -eq $WindowsUser.SID
     }
-    
+	
     if([String]::IsNullOrEmpty($navuser.UserName))
     { 
         "New user: " + $user.username
@@ -37,7 +37,8 @@ foreach ($user in $list)
     $navroleExists = Get-NAVServerPermissionSet -ServerInstance $NavServerName | where-Object PermissionSetID -eq $user.rolesid
     if (!([String]::IsNullOrEmpty($navroleExists)))
     {
-        $navrole = Get-NAVServerUserPermissionSet -ServerInstance $NavServerName -WindowsAccount $WindowsUser.Caption
+		$navrole = Get-NAVServerUserPermissionSet -ServerInstance $NavServerName -UserName $user.username
+        #$navrole = Get-NAVServerUserPermissionSet -ServerInstance $NavServerName -WindowsAccount $WindowsUser.Caption
         #New-NAVServerUserPermissionSet -PermissionSetId SUPER -ServerInstance DynamicsNAV80 -WindowsAccount OSOHOTWATER\kf
         #$navrole
         #$user.rolesid
@@ -45,7 +46,8 @@ foreach ($user in $list)
         if((!($navrole.PermissionSetID -contains $user.rolesid)) -or ([String]::IsNullOrEmpty($navrole)))
         {
             #New-NAVServerUserPermissionSet -ServerInstance $NavServerName -WindowsAccount $user.username -PermissionSetId $user.rolesid -CompanyName $user.company -ErrorAction Continue
-            New-NAVServerUserPermissionSet -ServerInstance $NavServerName -WindowsAccount $WindowsUser.Caption -PermissionSetId $user.rolesid -ErrorAction Continue
+            #New-NAVServerUserPermissionSet -ServerInstance $NavServerName -WindowsAccount $WindowsUser.Caption -PermissionSetId $user.rolesid -ErrorAction Continue
+			New-NAVServerUserPermissionSet -ServerInstance $NavServerName -UserName $user.username -CompanyName $user.company -PermissionSetId $user.rolesid -ErrorAction Continue
             "New Role for '" + $user.username + "': " + $user.rolesid + " ; " + $user.company
         }
         else
