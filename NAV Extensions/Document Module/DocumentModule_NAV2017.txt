@@ -606,8 +606,8 @@ OBJECT Codeunit 53201 Document Module Management
 {
   OBJECT-PROPERTIES
   {
-    Date=28.10.16;
-    Time=20:03:45;
+    Date=07.11.16;
+    Time=14:50:05;
     Modified=Yes;
     Version List=DOC1.1;
   }
@@ -803,14 +803,23 @@ OBJECT Codeunit 53201 Document Module Management
 
     PROCEDURE DownloadFileToClient@1000000015(VAR DocumentModuleDocumentsP@1000000002 : Record 53201;ClientFileNameP@1000000001 : Text) : Text[250];
     VAR
+      DocumentModuleSetupL@82100 : Record 53200;
+      AttachmentL@82101 : Record 5062;
       FileNameL@1000000000 : Text;
       FileManagementL@1101103000 : Codeunit 419;
     BEGIN
       IF ClientFileNameP = '' THEN
         ClientFileNameP := FileManagementL.ClientTempFileName(DocumentModuleDocumentsP."File Extension");
       FileNameL := FileManagementL.ServerTempFileName(DocumentModuleDocumentsP."File Extension");
-      DocumentModuleDocumentsP.CALCFIELDS(Attachment);
-      DocumentModuleDocumentsP.Attachment.EXPORT(FileNameL);
+      IF DocumentModuleSetupL."Use Attachment Table" THEN BEGIN
+        IF AttachmentL.GET(DocumentModuleDocumentsP."Attachment No.") THEN BEGIN
+          AttachmentL.CALCFIELDS(AttachmentL."Attachment File");
+          AttachmentL."Attachment File".EXPORT(FileNameL);
+        END;
+      END ELSE BEGIN
+        DocumentModuleDocumentsP.CALCFIELDS(Attachment);
+        DocumentModuleDocumentsP.Attachment.EXPORT(FileNameL);
+      END;
       FileManagementL.DownloadToFile(FileNameL, ClientFileNameP);
       FileManagementL.DeleteServerFile(FileNameL);
       EXIT(ClientFileNameP);
