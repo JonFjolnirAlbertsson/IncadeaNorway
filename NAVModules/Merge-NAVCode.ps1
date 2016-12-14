@@ -94,13 +94,21 @@ function Merge-NAVCode
                 write-host "Removing items from the folder $DestinationTarget*.*" -foregroundcolor "white"
                 Remove-Item -Path "$DestinationTarget*.*"
 
-                Split-NAVApplicationObjectFile  -Source $SourceOriginal -Destination $DestinationOriginal -PreserveFormatting -Force
-                Split-NAVApplicationObjectFile  -Source $SourceModified -Destination $DestinationModified -PreserveFormatting -Force
-                Split-NAVApplicationObjectFile  -Source $SourceTarget -Destination $DestinationTarget -PreserveFormatting -Force
-    
-                write-host "The source file $SourceOriginal has been split to the destination $DestinationOriginal" -foregroundcolor "white" 
-                write-host "The source file $SourceModified has been split to the destination $DestinationModified" -foregroundcolor "white"
-                write-host "The source file $SourceTarget has been split to the destination $DestinationModified" -foregroundcolor "white"
+                if(![String]::IsNullOrEmpty($SourceOriginal))
+                {
+                    Split-NAVApplicationObjectFile  -Source $SourceOriginal -Destination $DestinationOriginal -PreserveFormatting -Force
+                    write-host "The source file $SourceOriginal has been split to the destination $DestinationOriginal" -foregroundcolor "white" 
+                }
+                if(![String]::IsNullOrEmpty($SourceModified))
+                {
+                    Split-NAVApplicationObjectFile  -Source $SourceModified -Destination $DestinationModified -PreserveFormatting -Force
+                    write-host "The source file $SourceModified has been split to the destination $DestinationModified" -foregroundcolor "white"
+                }
+                if(![String]::IsNullOrEmpty($SourceTarget))
+                {
+                    Split-NAVApplicationObjectFile  -Source $SourceTarget -Destination $DestinationTarget -PreserveFormatting -Force
+                    write-host "The source file $SourceTarget has been split to the destination $DestinationModified" -foregroundcolor "white"
+                 }
             }
             # Merge text files
             If($Merge)

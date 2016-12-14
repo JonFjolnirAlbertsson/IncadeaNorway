@@ -22,22 +22,38 @@ function Open-File-SID
         [Switch] $OpenToBeJoined,
         [Switch] $OpenInNotepadPlus,
         [Switch] $OpenInKdiff,
-        [Switch] $OpenToMergeInKdiff
+        [Switch] $OpenToMergeInKdiff,
+		[Switch] $UseWaldoFolders
         )
     PROCESS
     {
         try
         {       
-            [String] $Original = join-path $WorkingFolder "\Original\$ObjectName.TXT"
-            [String] $Modified = join-path $WorkingFolder "\Modified\$ObjectName.TXT"
-            [String] $Target = join-path $WorkingFolder "\Target\$ObjectName.TXT"
+            [String] $Original = ''
+            [String] $Modified = ''
+            [String] $Target = ''
             [String] $Merged = join-path $WorkingFolder "\Merged\$ObjectName.TXT"
             [String] $ToBeJoined = join-path $WorkingFolder "\Merged\ToBeJoined\$ObjectName.TXT"
-            [String] $Result = join-path $WorkingFolder "\Result\TAB\$ObjectName.TXT"
-
+            [String] $Result = ''
+				
             [String] $FileArgs = "";
             [String] $KdiffFileArgs = '';
-
+			
+			if($UseWaldoFolders) 
+            {
+				$Original = join-path $WorkingFolder "\MergeResult\ConflictOriginal\$ObjectName.TXT"
+				$Modified = join-path $WorkingFolder "\MergeResult\ConflictModified\$ObjectName.TXT"
+            	$Target = join-path $WorkingFolder "\MergeResult\ConflictTarget\$ObjectName.TXT"
+				$Result = join-path $WorkingFolder "\MergeResult\$ObjectName.TXT"
+            }
+			else
+			{
+				$Original = join-path $WorkingFolder "\Original\$ObjectName.TXT"
+				$Modified = join-path $WorkingFolder "\Modified\$ObjectName.TXT"
+            	$Target = join-path $WorkingFolder "\Target\$ObjectName.TXT"			
+				$Result = join-path $WorkingFolder "\Result\TAB\$ObjectName.TXT"
+			}
+				
             if($OpenOriginal) 
             {
                 if((Test-Path -Path $Original))
