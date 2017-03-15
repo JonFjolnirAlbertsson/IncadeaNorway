@@ -22,7 +22,7 @@ function NotepadPlus
             if($ArgumentList)
             {
                 #& $NotepadPlus $ArgumentList
-                Start-Process -FilePath $NotepadPlus -ArgumentList $KdiffFileArgs          
+                Start-Process -FilePath $NotepadPlus -ArgumentList $ArgumentList          
             }
             else
             {

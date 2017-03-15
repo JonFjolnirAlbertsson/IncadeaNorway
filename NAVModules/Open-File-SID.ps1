@@ -14,11 +14,12 @@ function Open-File-SID
     param(
         [string] $WorkingFolder, 
         [string] $ObjectName,
-        [Switch] $OpenOriginal,
-        [Switch] $OpenModified,
-        [Switch] $OpenTarget,
-        [Switch] $OpenMerged,
-        [Switch] $OpenResult,
+        [Switch] $OpenOriginal=$true,
+        [Switch] $OpenModified=$true,
+        [Switch] $OpenTarget=$true,
+        [Switch] $OpenMerged=$true,
+        [Switch] $OpenResult=$true,
+        [Switch] $OpenConflict=$true,
         [Switch] $OpenToBeJoined,
         [Switch] $OpenInNotepadPlus,
         [Switch] $OpenInKdiff,
@@ -35,6 +36,7 @@ function Open-File-SID
             [String] $Merged = join-path $WorkingFolder "\Merged\$ObjectName.TXT"
             [String] $ToBeJoined = join-path $WorkingFolder "\Merged\ToBeJoined\$ObjectName.TXT"
             [String] $Result = ''
+            [String] $Conflict = ''
 				
             [String] $FileArgs = "";
             [String] $KdiffFileArgs = '';
@@ -43,15 +45,16 @@ function Open-File-SID
             {
 				$Original = join-path $WorkingFolder "\MergeResult\ConflictOriginal\$ObjectName.TXT"
 				$Modified = join-path $WorkingFolder "\MergeResult\ConflictModified\$ObjectName.TXT"
-            	$Target = join-path $WorkingFolder "\MergeResult\ConflictTarget\$ObjectName.TXT"
-				$Result = join-path $WorkingFolder "\MergeResult\$ObjectName.TXT"
+            	$Target   = join-path $WorkingFolder "\MergeResult\ConflictTarget\$ObjectName.TXT"
+				$Result   = join-path $WorkingFolder "\MergeResult\$ObjectName.TXT"
+                $Conflict = join-path $WorkingFolder "\MergeResult\$ObjectName.CONFLICT"
             }
 			else
 			{
 				$Original = join-path $WorkingFolder "\Original\$ObjectName.TXT"
 				$Modified = join-path $WorkingFolder "\Modified\$ObjectName.TXT"
-            	$Target = join-path $WorkingFolder "\Target\$ObjectName.TXT"			
-				$Result = join-path $WorkingFolder "\Result\TAB\$ObjectName.TXT"
+            	$Target   = join-path $WorkingFolder "\Target\$ObjectName.TXT"			
+				$Result   = join-path $WorkingFolder "\Result\TAB\$ObjectName.TXT"
 			}
 				
             if($OpenOriginal) 
@@ -130,7 +133,22 @@ function Open-File-SID
                     }
                 }
             }
-
+             if($OpenConflict) 
+            {
+                if((Test-Path -Path $Conflict))
+                {
+                    if([String]::IsNullOrEmpty($FileArgs))
+                    {
+                        $FileArgs = $Conflict
+                        $KdiffFileArgs =  (join-path $WorkingFolder "\Result\$ObjectName.CONFLICT")
+                    }
+                    else
+                    {
+                        $FileArgs = $FileArgs, $Conflict
+                        $KdiffFileArgs =  $KdiffFileArgs + ' ' + (join-path $WorkingFolder "\Result\$ObjectName.CONFLICT")
+                    }
+                }
+            }
             if($OpenToBeJoined) 
             {
                 if([String]::IsNullOrEmpty($FileArgs))
