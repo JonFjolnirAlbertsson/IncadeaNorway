@@ -191,11 +191,11 @@ function Merge-NAVCode
 
                 if ($RemoveOriginalFilesNotInTarget)
                 {
-                    Remove-OriginalFilesNotInTarget -CompareObject $CompareObject -OriginalFolder $DestinationOriginal -TargetFolder $DestinationTarget -WorkingFolderPath $JoinPath                     
+                    Remove-OriginalFilesNotInTarget -CompareObject $CompareObject -OriginalFolder $DestinationOriginal -TargetFolder $DestinationTarget -WorkingFolderPath $WorkingFolderPath                    
                 }
                 if ($RemoveModifyFilesNotInTarget)
                 {
-                    Remove-ModifiedFilesNotInTarget -CompareObject $CompareObject -ModifiedFolder $DestinationModified -TargetFolder $DestinationTarget -WorkingFolderPath $JoinPath                          
+                    Remove-ModifiedFilesNotInTarget -CompareObject $CompareObject -ModifiedFolder $DestinationModified -TargetFolder $DestinationTarget -WorkingFolderPath $WorkingFolderPath                        
                 }
                 write-host "Copy manually merged objects to the join folder" -foregroundcolor "white"
                 write-host "Copying files from the folder $Merged to the folder $JoinPath" -foregroundcolor "white"
