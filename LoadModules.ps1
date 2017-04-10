@@ -1,4 +1,4 @@
-﻿write-host 'Loading SI-Data modules...'
+﻿write-host 'Loading Incadea Norway AS modules...'
 
 Write-Progress -Activity 'Loading NAVModules ...' -PercentComplete 50
 Import-module (join-path $PSScriptRoot 'NAVModules\NAVModules.psm1') -DisableNameChecking -Force -WarningAction SilentlyContinue -ErrorAction SilentlyContinue
