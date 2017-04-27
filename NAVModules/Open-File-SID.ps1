@@ -19,7 +19,7 @@ function Open-File-SID
         [Switch] $OpenTarget=$true,
         [Switch] $OpenMerged=$true,
         [Switch] $OpenResult=$true,
-        [Switch] $OpenConflict=$true,
+        [Switch] $OpenConflict=$false,
         [Switch] $OpenToBeJoined,
         [Switch] $OpenInNotepadPlus,
         [Switch] $OpenInKdiff,
@@ -54,7 +54,8 @@ function Open-File-SID
 				$Original = join-path $WorkingFolder "\Original\$ObjectName.TXT"
 				$Modified = join-path $WorkingFolder "\Modified\$ObjectName.TXT"
             	$Target   = join-path $WorkingFolder "\Target\$ObjectName.TXT"			
-				$Result   = join-path $WorkingFolder "\Result\TAB\$ObjectName.TXT"
+				$Result   = join-path $WorkingFolder "\Result\$ObjectName.TXT"
+                $Conflict = join-path $WorkingFolder "\Result\$ObjectName.CONFLICT"
 			}
 				
             if($OpenOriginal) 
