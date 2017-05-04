@@ -98,7 +98,30 @@ $code =
   Import-module (Join-Path ''C:\GitHub\IncadeaNorway'' ''LoadModules.ps1'')  
 }
 $psISE.CurrentPowerShellTab.AddOnsMenu.Submenus.Add(''Force Import Incadea Norge AS Modules'',$code,$null)
-
+$code =
+{
+  Import-Module "${env:ProgramFiles(x86)}\Microsoft Dynamics NAV90\RoleTailored Client\Microsoft.Dynamics.Nav.Model.Tools.psd1" -WarningAction SilentlyContinue | out-null
+  Import-Module "$env:ProgramFiles\Microsoft Dynamics NAV\90\Service\NavAdminTool.ps1" -WarningAction SilentlyContinue | Out-Null
+  Import-Module "${env:ProgramFiles(x86)}\Microsoft Dynamics NAV\90\RoleTailored Client\Microsoft.Dynamics.Nav.Apps.Tools.psd1" -WarningAction SilentlyContinue | Out-Null
+  Clear-Host
+  Write-Host ''get-Command -Module ''Microsoft.Dynamics.Nav.*'''' -ForeGroundColor Yellow
+  get-Command -Module ''Microsoft.Dynamics.Nav.*''
+  Import-module (Join-Path ''C:\GitHub\Cloud.Ready.Software.PowerShell\PSModules'' ''LoadModules.ps1'')  
+  Import-module (Join-Path ''C:\GitHub\IncadeaNorway'' ''LoadModules.ps1'')  
+}
+$psISE.CurrentPowerShellTab.AddOnsMenu.Submenus.Add(''Import fastfit NAV 2016 modules'',$code,$null)
+$code =
+{
+  Import-Module "${env:ProgramFiles(x86)}\Microsoft Dynamics NAV\100\RoleTailored Client\Microsoft.Dynamics.Nav.Model.Tools.psd1" -WarningAction SilentlyContinue | out-null
+  Import-Module "$env:ProgramFiles\Microsoft Dynamics NAV\100\Service\NavAdminTool.ps1" -WarningAction SilentlyContinue | Out-Null
+  Import-Module "${env:ProgramFiles(x86)}\Microsoft Dynamics NAV\100\RoleTailored Client\Microsoft.Dynamics.Nav.Apps.Tools.psd1" -WarningAction SilentlyContinue | Out-Null
+  Clear-Host
+  Write-Host ''get-Command -Module ''Microsoft.Dynamics.Nav.*'''' -ForeGroundColor Yellow
+  get-Command -Module ''Microsoft.Dynamics.Nav.*''
+  Import-module (Join-Path ''C:\GitHub\Cloud.Ready.Software.PowerShell\PSModules'' ''LoadModules.ps1'')  
+  Import-module (Join-Path ''C:\GitHub\IncadeaNorway'' ''LoadModules.ps1'')  
+}
+$psISE.CurrentPowerShellTab.AddOnsMenu.Submenus.Add(''Import Upgrade to NAV 2017 modules'',$code,$null)
 '
 
 Add-Content -Value $code -Path $profile.AllUsersCurrentHost
