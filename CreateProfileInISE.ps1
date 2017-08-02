@@ -30,7 +30,7 @@ $code =
 {
 
 $file = $psise.CurrentPowerShellTab.Files.Add()
-
+$gitpath = "C:\Git"
 $Text = ''''
 foreach($Item in (Get-History -Count $MaximumHistoryCount)){
     $Text += "$($item.CommandLine.TrimStart()) `n"
@@ -90,13 +90,13 @@ $psISE.CurrentPowerShellTab.AddOnsMenu.Submenus.Add(''Open CRS scripts folder'',
 $code =
 {
   
-  Import-module (Join-Path ''C:\GitHub\Cloud.Ready.Software.PowerShell\PSModules'' ''LoadModules.ps1'')  
+  Import-module (Join-Path "$gitpath\Cloud.Ready.Software.PowerShell\PSModules" ''LoadModules.ps1'')
 }
 $psISE.CurrentPowerShellTab.AddOnsMenu.Submenus.Add(''Force Import Cloud Ready Software Modules'',$code,$null)
 
 $code =
 {
-  Import-module (Join-Path ''C:\GitHub\IncadeaNorway'' ''LoadModules.ps1'')  
+  Import-module (Join-Path $PSScriptRoot ''LoadModules.ps1'')  
 }
 $psISE.CurrentPowerShellTab.AddOnsMenu.Submenus.Add(''Force Import Incadea Norge AS Modules'',$code,$null)
 $code =
@@ -107,8 +107,8 @@ $code =
   Clear-Host
   Write-Host ''get-Command -Module ''Microsoft.Dynamics.Nav.*'''' -ForeGroundColor Yellow
   get-Command -Module ''Microsoft.Dynamics.Nav.*''
-  Import-module (Join-Path ''C:\GitHub\Cloud.Ready.Software.PowerShell\PSModules'' ''LoadModules.ps1'')  
-  Import-module (Join-Path ''C:\GitHub\IncadeaNorway'' ''LoadModules.ps1'')  
+  Import-module (Join-Path "$gitpath\Cloud.Ready.Software.PowerShell\PSModules" ''LoadModules.ps1'')  
+  Import-module (Join-Path $PSScriptRoot ''LoadModules.ps1'')  
 }
 $psISE.CurrentPowerShellTab.AddOnsMenu.Submenus.Add(''Import fastfit NAV 2016 modules'',$code,$null)
 $code =
@@ -119,8 +119,8 @@ $code =
   Clear-Host
   Write-Host ''get-Command -Module ''Microsoft.Dynamics.Nav.*'''' -ForeGroundColor Yellow
   get-Command -Module ''Microsoft.Dynamics.Nav.*''
-  Import-module (Join-Path ''C:\GitHub\Cloud.Ready.Software.PowerShell\PSModules'' ''LoadModules.ps1'')  
-  Import-module (Join-Path ''C:\GitHub\IncadeaNorway'' ''LoadModules.ps1'')  
+  Import-module (Join-Path "$gitpath\\Cloud.Ready.Software.PowerShell\PSModules" ''LoadModules.ps1'')  
+  Import-module (Join-Path $PSScriptRoot ''LoadModules.ps1'')  
 }
 $psISE.CurrentPowerShellTab.AddOnsMenu.Submenus.Add(''Import Upgrade to NAV 2017 modules'',$code,$null)
 '
