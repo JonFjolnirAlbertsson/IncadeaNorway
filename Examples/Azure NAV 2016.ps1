@@ -1,4 +1,6 @@
-﻿#Creating NAV 2016 Demo Server
+﻿#Install-Module AzureRM
+
+#Creating NAV 2016 Demo Server
 Import-AzurePublishSettingsFile "C:\Users\jal\OneDrive for Business\Files\Azure\Visual Studio Premium med MSDN-10-12-2015-credentials.publishsettings"
 
 Get-AzureVMImage |  select ImageFamily | Group-Object ImageFamily | Format-Table -AutoSize
