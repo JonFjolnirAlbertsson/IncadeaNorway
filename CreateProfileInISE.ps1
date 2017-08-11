@@ -25,19 +25,18 @@ PS >"
 if (-not($psise)) {
     break
 } 
-
+$gitpath = "C:\Git"
+$scriptfolderpath = "' + $PSScriptRoot + '"   
 $code =
 {
 
 $file = $psise.CurrentPowerShellTab.Files.Add()
-
 $Text = ''''
 foreach($Item in (Get-History -Count $MaximumHistoryCount)){
     $Text += "$($item.CommandLine.TrimStart()) `n"
 }
 
-$file.Editor.Text = $Text
-                                 
+$file.Editor.Text = $Text                              
 }
 $psISE.CurrentPowerShellTab.AddOnsMenu.Submenus.Add(''Copy History to new file'',$code,$null)
 
@@ -82,21 +81,20 @@ $psISE.CurrentPowerShellTab.AddOnsMenu.Submenus.Add(''Load NAV 2017 CmdLets'',$c
 
 $code =
 {
-  #Start ''C:\Git\Cloud.Ready.Software.PowerShell\PSModules''
-  Start ''' + $PSScriptRoot + '''
+  #Start ''C:\GitHub\Cloud.Ready.Software.PowerShell\PSModules''
+  Start $scriptfolderpath
 }
 $psISE.CurrentPowerShellTab.AddOnsMenu.Submenus.Add(''Open CRS scripts folder'',$code,$null)
-
 $code =
 {
   
-  Import-module (Join-Path ''C:\Git\Cloud.Ready.Software.PowerShell\PSModules'' ''LoadModules.ps1'')  
+  Import-module (Join-Path "$gitpath\Cloud.Ready.Software.PowerShell\PSModules" ''LoadModules.ps1'')
 }
 $psISE.CurrentPowerShellTab.AddOnsMenu.Submenus.Add(''Force Import Cloud Ready Software Modules'',$code,$null)
 
 $code =
 {
-  Import-module (Join-Path ''C:\Git\IncadeaNorway'' ''LoadModules.ps1'')  
+  Import-module (Join-Path $scriptfolderpath ''LoadModules.ps1'')  
 }
 $psISE.CurrentPowerShellTab.AddOnsMenu.Submenus.Add(''Force Import Incadea Norge AS Modules'',$code,$null)
 $code =
@@ -107,8 +105,8 @@ $code =
   Clear-Host
   Write-Host ''get-Command -Module ''Microsoft.Dynamics.Nav.*'''' -ForeGroundColor Yellow
   get-Command -Module ''Microsoft.Dynamics.Nav.*''
-  Import-module (Join-Path ''C:\Git\Cloud.Ready.Software.PowerShell\PSModules'' ''LoadModules.ps1'')  
-  Import-module (Join-Path ''C:\Git\IncadeaNorway'' ''LoadModules.ps1'')  
+  Import-module (Join-Path "$gitpath\Cloud.Ready.Software.PowerShell\PSModules" ''LoadModules.ps1'')  
+  Import-module (Join-Path $scriptfolderpath ''LoadModules.ps1'')  
 }
 $psISE.CurrentPowerShellTab.AddOnsMenu.Submenus.Add(''Import fastfit NAV 2016 modules'',$code,$null)
 $code =
@@ -119,8 +117,8 @@ $code =
   Clear-Host
   Write-Host ''get-Command -Module ''Microsoft.Dynamics.Nav.*'''' -ForeGroundColor Yellow
   get-Command -Module ''Microsoft.Dynamics.Nav.*''
-  Import-module (Join-Path ''C:\Git\Cloud.Ready.Software.PowerShell\PSModules'' ''LoadModules.ps1'')  
-  Import-module (Join-Path ''C:\Git\IncadeaNorway'' ''LoadModules.ps1'')  
+  Import-module (Join-Path "$gitpath\Cloud.Ready.Software.PowerShell\PSModules" ''LoadModules.ps1'')  
+  Import-module (Join-Path $scriptfolderpath ''LoadModules.ps1'')  
 }
 $psISE.CurrentPowerShellTab.AddOnsMenu.Submenus.Add(''Import Upgrade to NAV 2017 modules'',$code,$null)
 '
