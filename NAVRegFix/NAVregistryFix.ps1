@@ -18,7 +18,9 @@ if ( [System.IntPtr]::Size -eq 4 )
         $nav71 = Get-ItemProperty -path "HKLM:\SOFTWARE\Microsoft\Microsoft Dynamics NAV\71\RoleTailored Client" -ErrorAction SilentlyContinue
 		$nav71exist = ($nav71.Path.Length -gt 0)
         $nav90 = Get-ItemProperty -path "HKLM:\SOFTWARE\Microsoft\Microsoft Dynamics NAV\90\RoleTailored Client" -ErrorAction SilentlyContinue
-		$nav90exist = ($nav90.Path.Length -gt 0)
+		$nav90exist = ($nav100.Path.Length -gt 0)
+        $nav100 = Get-ItemProperty -path "HKLM:\SOFTWARE\Microsoft\Microsoft Dynamics NAV\100\RoleTailored Client" -ErrorAction SilentlyContinue
+		$nav100exist = ($nav100.Path.Length -gt 0)
         if ( $nav71exist)
           {
            
@@ -84,6 +86,8 @@ if ( [System.IntPtr]::Size -eq 4 )
 		$nav71exist = ($nav71.Path.Length -gt 0) 
         $nav90 = Get-ItemProperty -path "HKLM:\SOFTWARE\Wow6432Node\Microsoft\Microsoft Dynamics NAV\90\RoleTailored Client" -ErrorAction SilentlyContinue
 		$nav90exist = ($nav90.Path.Length -gt 0) 
+        $nav100 = Get-ItemProperty -path "HKLM:\SOFTWARE\Wow6432Node\Microsoft\Microsoft Dynamics NAV\100\RoleTailored Client" -ErrorAction SilentlyContinue
+		$nav100exist = ($nav100.Path.Length -gt 0)
         if ($nav71exist)
 		{
            # Processing registry correction on 64-bits
