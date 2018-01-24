@@ -20,6 +20,7 @@ function Merge-NAVCode
         [Switch] $Split,
         [Switch] $Merge,
         [Switch] $Join,
+        [Switch] $CopyMergedToSubFolders,
         [Switch] $JoinCopyResultFoldersBefore,
         [Switch] $OpenConflictFilesInKdiff,
         [Switch] $RemoveModifyFilesNotInTarget,
@@ -42,9 +43,11 @@ function Merge-NAVCode
             $DestinationModified =  join-path $WorkingFolderPath   "Modified"
             $DestinationTarget =  join-path $WorkingFolderPath   "Target"
 
-            $Delta =  join-path $WorkingFolderPath   "Delta"
-            $Result =  join-path $WorkingFolderPath  "Result"
-            $Merged =  join-path $WorkingFolderPath   "Merged"
+            $Delta =  join-path $WorkingFolderPath "Delta"
+            $Result =  join-path $WorkingFolderPath "Result"
+            $ResultMergedPath =  join-path $Result "Merged"
+            $Merged =  join-path $WorkingFolderPath "Merged"
+            $MergedResultFile =  join-path $WorkingFolderPath "Incadea-MergedResult.txt"
 
             # Check if folders exists. If not create them.
             if(!(Test-Path -Path $DestinationOriginal )){
@@ -61,6 +64,9 @@ function Merge-NAVCode
             }
             if(!(Test-Path -Path $Result )){
                 New-Item -ItemType directory -Path $Result
+            }
+            if(!(Test-Path -Path $ResultMergedPath )){
+                New-Item -ItemType directory -Path $ResultMergedPath
             }
             if(!(Test-Path -Path $Merged )){
                 New-Item -ItemType directory -Path $Merged
@@ -135,8 +141,10 @@ function Merge-NAVCode
                             foreach {& $Kdiff $_.Original $_.Modified $_.Target -o  (join-path $Merged (Get-Item $_.Original.FileName).Name) }
                 }else
                 {
-                    Merge-NAVApplicationObject -Modified $ModifiedCompareObject -Original $OriginalCompareObject -Result $Result -Target $TargetCompareObject -DateTimeProperty FromTarget -ModifiedProperty FromModified -VersionListProperty FromTarget -Force
+                    $ResultFiles = Merge-NAVApplicationObject -Modified $ModifiedCompareObject -Original $OriginalCompareObject -Result $Result -Target $TargetCompareObject -DateTimeProperty FromTarget -ModifiedProperty FromModified -VersionListProperty FromTarget -Force
                 }
+                write-host "Write merge result to file $MergedResultFile."
+                $ResultFiles | Out-File $MergedResultFile
                 write-host "Creating the folder $CODFolder or deleting all files in the folde. " -foregroundcolor "white" 
                 New-Item -Path $CODFolder -ItemType directory -Force | out-null
                 Remove-Item -Path (join-path $CODFolder '*.*')
@@ -150,12 +158,18 @@ function Merge-NAVCode
                 New-Item -Path $REPFolder -ItemType directory -Force | out-null
                 Remove-Item -Path (join-path $REPFolder '*.*')
 
-                #get-childitem  -path $Result  | where-object {$_.Name -like "COD*.*"} | Out-Default
-                get-childitem  -path $Result  | where-object {$_.Name -like "COD*.*"} | Move-Item -Destination $CODFolder -Force | out-null
-                get-childitem  -path $Result  | where-object {$_.Name -like "TAB*.*"} | Move-Item -Destination $TABFolder -Force | out-null
-                get-childitem  -path $Result  | where-object {$_.Name -like "PAG*.*"} | Move-Item -Destination $PAGFolder -Force | out-null
-                get-childitem  -path $Result  | where-object {$_.Name -like "REP*.*"} | Move-Item -Destination $REPFolder -Force | out-null
-    
+                if($CopyMergedToSubFolder)
+                {
+                    write-host "Copy merged files to sub folders."  -foregroundcolor "white"
+                    #get-childitem  -path $Result  | where-object {$_.Name -like "COD*.*"} | Out-Default
+                    get-childitem  -path $Result  | where-object {$_.Name -like "COD*.*"} | Move-Item -Destination $CODFolder -Force | out-null
+                    get-childitem  -path $Result  | where-object {$_.Name -like "TAB*.*"} | Move-Item -Destination $TABFolder -Force | out-null
+                    get-childitem  -path $Result  | where-object {$_.Name -like "PAG*.*"} | Move-Item -Destination $PAGFolder -Force | out-null
+                    get-childitem  -path $Result  | where-object {$_.Name -like "REP*.*"} | Move-Item -Destination $REPFolder -Force | out-null
+                }else
+                {
+                    get-childitem  -path $Result  | where-object {$_.Name -like "*.TXT"} | Move-Item -Destination $ResultMergedPath -Force | out-null
+                }
                 write-host "The filter used to merge files was $CompareObject"  -foregroundcolor "white" 
                 write-host "Below you can see were the source files come from ..."  -foregroundcolor "white" 
                 write-host $OriginalCompareObject  -foregroundcolor "white" 
@@ -191,11 +205,11 @@ function Merge-NAVCode
 
                 if ($RemoveOriginalFilesNotInTarget)
                 {
-                    Remove-OriginalFilesNotInTarget -CompareObject $CompareObject -OriginalFolder $DestinationOriginal -TargetFolder $DestinationTarget -WorkingFolderPath $WorkingFolderPath                    
+                    Remove-OriginalFilesNotInTarget -CompareObjectFilter $CompareObject -OriginalFolder $DestinationOriginal -TargetFolder $DestinationTarget -WorkingFolderPath $WorkingFolderPath                    
                 }
                 if ($RemoveModifyFilesNotInTarget)
                 {
-                    Remove-ModifiedFilesNotInTarget -CompareObject $CompareObject -ModifiedFolder $DestinationModified -TargetFolder $DestinationTarget -WorkingFolderPath $WorkingFolderPath                        
+                    Remove-ModifiedFilesNotInTarget -CompareObjectFilter $CompareObject -ModifiedFolder $DestinationModified -TargetFolder $DestinationTarget -WorkingFolderPath $WorkingFolderPath                        
                 }
                 write-host "Copy manually merged objects to the join folder" -foregroundcolor "white"
                 write-host "Copying files from the folder $Merged to the folder $JoinPath" -foregroundcolor "white"
