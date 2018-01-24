@@ -25,7 +25,7 @@ PS >"
 if (-not($psise)) {
     break
 } 
-$gitpath = "C:\Git"
+$gitpath =  "' + (Join-Path (Split-Path -Path $PSScriptRoot -Qualifier) 'Git') + '"
 $scriptfolderpath = "' + $PSScriptRoot + '"   
 $code =
 {
