@@ -9,26 +9,32 @@
    
 #>
 
-function Invoke-SQL-SID {
+function Invoke-SQL-INC {
     [CmdLetBinding()]
     param(
         [string] $DatabaseServer = [net.dns]::gethostname(),
         [String] $DatabaseInstance = '',
         [string] $DatabaseName = 'Master',
-        [string] $SQLCommand = $(throw 'Please specify a query.')
+        [string] $SQLCommand = $(throw 'Please specify a query.'),
+        [Parameter(Mandatory=$false)]
+        [String] $TimeOut = 0,
+        [Boolean] $TrustedConnection = $true
       )
 
     if (!([string]::IsNullOrEmpty($DatabaseInstance))){
         $DatabaseServer = "$($DatabaseServer)\$($DatabaseInstance)"
     }
-    $connectionString = "Data Source=$DatabaseServer; Integrated Security=SSPI; Initial Catalog=$DatabaseName"
-
+    if ($TrustedConnection -eq $true){
+        $connectionString = "Server=$DatabaseServer; Trusted_Connection=True"
+    }else{
+        $connectionString = "Data Source=$DatabaseServer; Integrated Security=SSPI; Initial Catalog=$DatabaseName"
+    }
     write-Host -ForegroundColor Green "Invoke-SQL with this statement on database '$DatabaseName':"
     Write-Host -ForegroundColor Gray $SQLCommand
 
     $connection = new-object system.data.SqlClient.SQLConnection($connectionString)
     $command = new-object system.data.sqlclient.sqlcommand($sqlCommand,$connection)
-    $command.CommandTimeout = 0 
+    $command.CommandTimeout = $TimeOut
     $connection.Open()
 
     $adapter = New-Object System.Data.sqlclient.sqlDataAdapter $command

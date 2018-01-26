@@ -1,4 +1,4 @@
-﻿function Restore-SQLBackupFile-SID
+﻿function Restore-SQLBackupFile-INC
 {
     <#
     .Synopsis
@@ -24,20 +24,25 @@
         [Parameter(Mandatory=$false)]
         [String] $DatabaseDataPath = '',
         [Parameter(Mandatory=$false, Position=2)]
-        [String] $DatabaseLogPath = ''
+        [String] $DatabaseLogPath = '',
+		[Parameter(Mandatory=$false)]
+        [String] $TimeOut = 0,
+        [Parameter(Mandatory=$false)]
+        [switch]$TrustedConnection
     )
     
+    import-module 'sqlps' -DisableNameChecking
     if ([String]::IsNullOrEmpty($DatabaseDataPath)){
         $SQLString = "SELECT [Default Data Path] = SERVERPROPERTY('InstanceDefaultDataPath')"
-        $DatabaseDataPath = (invoke-sql-SID -DatabaseServer $DatabaseServer -DatabaseInstance $DatabaseInstance -sqlCommand $SQLString)."Default Data Path"
+        $DatabaseDataPath = (invoke-sql-INC -DatabaseServer $DatabaseServer -DatabaseInstance $DatabaseInstance -TrustedConnection $TrustedConnection -TimeOut $TimeOut -sqlCommand $SQLString)."Default Data Path"
     }
     if ([String]::IsNullOrEmpty($DatabaseLogPath)){
         $SQLString = "SELECT [Default Log Path] = SERVERPROPERTY('InstanceDefaultLogPath')"
-        $DatabaseLogPath = (invoke-sql-SID -DatabaseServer $DatabaseServer -DatabaseInstance $DatabaseInstance -sqlCommand $SQLString)."Default Log Path"
+        $DatabaseLogPath = (invoke-sql-INC -DatabaseServer $DatabaseServer -DatabaseInstance $DatabaseInstance -TrustedConnection $TrustedConnection -TimeOut $TimeOut -sqlCommand $SQLString)."Default Log Path"
     }
     $SQLString = "RESTORE FILELISTONLY FROM DISK=N'$BackupFile'"
     
-    $DatabaseFileList = Invoke-sql-SID -DatabaseServer $DatabaseServer -DatabaseInstance $DatabaseInstance -sqlCommand $SQLString
+    $DatabaseFileList = Invoke-sql-INC -DatabaseServer $DatabaseServer -DatabaseInstance $DatabaseInstance -TrustedConnection $TrustedConnection -TimeOut $TimeOut -sqlCommand $SQLString
     
     $RestoreSQLString = "RESTORE DATABASE [$DatabaseName] FROM DISK = N'$BackupFile' WITH FILE = 1,
     "
@@ -53,8 +58,9 @@
     $RestoreSQLString += 'NOUNLOAD, REPLACE, STATS = 5'
 
     write-Host -ForegroundColor Green "Restoring database $DatabaseName"
-        
-    #$null = Invoke-Sqlcmd -ServerInstance $DatabaseServer -Database 'master' -Query $RestoreSQLString -QueryTimeout 600000
-    $null = Invoke-sql-SID -DatabaseServer $DatabaseServer -DatabaseInstance $DatabaseInstance -DatabaseName 'master' -sqlCommand $RestoreSQLString    
+    write-host -ForegroundColor gray $RestoreSQLString
+																																				         
+#    $null = Invoke-Sqlcmd -Query $RestoreSQLString -ServerInstance "$DatabaseServer\$DatabaseInstance" -QueryTimeout $TimeOut -Database 'master' 
+    $null = Invoke-sql-INC -DatabaseServer $DatabaseServer -DatabaseInstance $DatabaseInstance -TrustedConnection $TrustedConnection -DatabaseName 'master' -TimeOut $TimeOut -sqlCommand $RestoreSQLString    
 }
 
