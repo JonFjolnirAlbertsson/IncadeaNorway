@@ -31,7 +31,7 @@
         [switch]$TrustedConnection
     )
     
-    import-module 'sqlps' -DisableNameChecking
+    #import-module 'sqlps' -DisableNameChecking
     if ([String]::IsNullOrEmpty($DatabaseDataPath)){
         $SQLString = "SELECT [Default Data Path] = SERVERPROPERTY('InstanceDefaultDataPath')"
         $DatabaseDataPath = (invoke-sql-INC -DatabaseServer $DatabaseServer -DatabaseInstance $DatabaseInstance -TrustedConnection $TrustedConnection -TimeOut $TimeOut -sqlCommand $SQLString)."Default Data Path"
