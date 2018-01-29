@@ -3,7 +3,8 @@
     [CmdletBinding()]
     param(
         [string] $User = "si-data\sql", 
-        [string] $NavServiceInstance
+        [string] $NavServiceInstance,
+        [string] $Tenant = ''
         )
     PROCESS
     {
@@ -12,20 +13,19 @@
             $navuser = Get-NAVServerUser -ServerInstance $NavServiceInstance | where-Object UserName -eq $User
             if([String]::IsNullOrEmpty($navuser.UserName))
             {           
-                $navuser = New-NAVServerUser -ServerInstance $NavServiceInstance -WindowsAccount $User -ErrorAction Continue
+                $navuser = New-NAVServerUser -ServerInstance $NavServiceInstance -WindowsAccount $User -Tenant $Tenant -LicenseType Full -State Enabled -ErrorAction Continue
                 "New user:" + $User
             }
 
             $navrole = Get-NAVServerUserPermissionSet -ServerInstance $NavServiceInstance -WindowsAccount $User
             if([String]::IsNullOrEmpty($navrole ))
             {            
-                New-NAVServerUserPermissionSet -PermissionSetId SUPER -ServerInstance $NavServiceInstance -WindowsAccount $User
+                New-NAVServerUserPermissionSet -PermissionSetId SUPER -ServerInstance $NavServiceInstance -WindowsAccount $User -Tenant $Tenant -ErrorAction Continue
                 "New PermissionSetId: SUPER" 
             }
 
             "NAV User '$User ' Created with the role SUPER."
             $User | ft -AutoSize
-
         }
         catch [Exception]
         {
