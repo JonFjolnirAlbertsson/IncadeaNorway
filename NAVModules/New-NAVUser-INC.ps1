@@ -17,7 +17,7 @@
                 "New user:" + $User
             }
 
-            $navrole = Get-NAVServerUserPermissionSet -ServerInstance $NavServiceInstance -WindowsAccount $User
+            $navrole = Get-NAVServerUserPermissionSet -ServerInstance $NavServiceInstance -Tenant $Tenant -WindowsAccount $User
             if([String]::IsNullOrEmpty($navrole ))
             {            
                 New-NAVServerUserPermissionSet -PermissionSetId SUPER -ServerInstance $NavServiceInstance -WindowsAccount $User -Tenant $Tenant -ErrorAction Continue
