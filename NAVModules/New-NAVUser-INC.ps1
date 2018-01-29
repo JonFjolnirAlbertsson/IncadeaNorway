@@ -10,7 +10,7 @@
     {
         try
         { 
-            $navuser = Get-NAVServerUser -ServerInstance $NavServiceInstance | where-Object UserName -eq $User
+            $navuser = Get-NAVServerUser -ServerInstance $NavServiceInstance -Tenant $Tenant | where-Object UserName -eq $User
             if([String]::IsNullOrEmpty($navuser.UserName))
             {           
                 $navuser = New-NAVServerUser -ServerInstance $NavServiceInstance -WindowsAccount $User -Tenant $Tenant -LicenseType Full -State Enabled -ErrorAction Continue
