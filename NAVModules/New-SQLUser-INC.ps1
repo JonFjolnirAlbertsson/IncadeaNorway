@@ -30,9 +30,9 @@
     )
     $SQLString = "CREATE USER [$DatabaseUser] FOR LOGIN [$DatabaseUser]"
     write-Host -ForegroundColor Green "Starting command $SQLString]"
-    Invoke-sql-INC -DatabaseServer $DatabaseServer -DatabaseInstance $DatabaseInstance -TrustedConnection $TrustedConnection -TimeOut $TimeOut -sqlCommand $SQLString
+    Invoke-sql-INC -DatabaseServer $DatabaseServer -DatabaseInstance $DatabaseInstance -DatabaseName $DatabaseName -TrustedConnection $TrustedConnection -TimeOut $TimeOut -sqlCommand $SQLString
     $SQLString = "ALTER ROLE [db_owner] ADD MEMBER [$DatabaseUser]"
     write-Host -ForegroundColor Green "Starting command $SQLString]"
-    Invoke-sql-INC -DatabaseServer $DatabaseServer -DatabaseInstance $DatabaseInstance -TrustedConnection $TrustedConnection -TimeOut $TimeOut -sqlCommand $SQLString
+    Invoke-sql-INC -DatabaseServer $DatabaseServer -DatabaseInstance $DatabaseInstance -DatabaseName $DatabaseName -TrustedConnection $TrustedConnection -TimeOut $TimeOut -sqlCommand $SQLString
 }
 
