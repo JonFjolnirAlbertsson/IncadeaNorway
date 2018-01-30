@@ -4,7 +4,7 @@
     param(
         [string] $User = "si-data\sql", 
         [string] $NavServiceInstance,
-        [string] $Tenant = ''
+        [string] $Tenant = 'default'
         )
     PROCESS
     {
