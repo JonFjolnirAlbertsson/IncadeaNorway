@@ -113,7 +113,7 @@ function Merge-NAVCode
                 if(![String]::IsNullOrEmpty($SourceTarget))
                 {
                     Split-NAVApplicationObjectFile  -Source $SourceTarget -Destination $DestinationTarget -PreserveFormatting -Force
-                    write-host "The source file $SourceTarget has been split to the destination $DestinationModified" -foregroundcolor "white"
+                    write-host "The source file $SourceTarget has been split to the destination $DestinationTarget" -foregroundcolor "white"
                  }
             }
             # Merge text files
