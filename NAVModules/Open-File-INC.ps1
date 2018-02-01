@@ -8,18 +8,18 @@
 .PREREQUISITES
    
 #>
-function Open-File-SID
+function Open-File-INC
 {
     [CmdletBinding()]
     param(
         [string] $WorkingFolder, 
         [string] $ObjectName,
-        [Switch] $OpenOriginal=$true,
-        [Switch] $OpenModified=$true,
-        [Switch] $OpenTarget=$true,
-        [Switch] $OpenMerged=$true,
-        [Switch] $OpenResult=$true,
-        [Switch] $OpenConflict=$false,
+        [Switch] $OpenOriginal,
+        [Switch] $OpenModified,
+        [Switch] $OpenTarget,
+        [Switch] $OpenMerged,
+        [Switch] $OpenResult,
+        [Switch] $OpenConflict,
         [Switch] $OpenToBeJoined,
         [Switch] $OpenInNotepadPlus,
         [Switch] $OpenInKdiff,
