@@ -2,8 +2,10 @@
 {
     [CmdletBinding()]
     param(
-        [string] $User = "si-data\sql", 
+		[Parameter(Mandatory=$true, ValueFromPipelineByPropertyname=$true)]
+        [System.String]
         [string] $NavServiceInstance,
+		[string] $User = "si-dev\nav_user", 
         [string] $Tenant = 'default'
         )
     PROCESS
