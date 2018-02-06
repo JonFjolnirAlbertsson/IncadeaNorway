@@ -18,9 +18,9 @@ function Import-NAVModule-INC {
         [string] $RTCFolder = 'RoleTailored Client',
         [Switch] $ImportRTCModule
       )
-    Import-Module "$env:ProgramFiles\Microsoft Dynamics NAV\$ShortVersion\$ServiceFolder\NavAdminTool.ps1"
+    Import-Module "$env:ProgramFiles\Microsoft Dynamics NAV\$ShortVersion\$ServiceFolder\NavAdminTool.ps1" -Force 
     if($ImportRTCModule)
     {
-        Import-Module "${env:ProgramFiles(x86)}\Microsoft Dynamics NAV\$ShortVersion\$RTCFolder\Microsoft.Dynamics.Nav.Model.Tools.psd1" -force
+        Import-Module "${env:ProgramFiles(x86)}\Microsoft Dynamics NAV\$ShortVersion\$RTCFolder\Microsoft.Dynamics.Nav.Model.Tools.psd1" -Force
     }
 }
