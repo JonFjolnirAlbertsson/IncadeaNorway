@@ -20,9 +20,10 @@ function Import-NAVModule-INC {
       )   
     if($ImportRTCModule)
     {
-        Import-Module "C:\Program Files (x86)\Microsoft Dynamics NAV\$ShortVersion\$RTCFolder\Microsoft.Dynamics.Nav.Model.Tools.psd1" -Force -DisableNameChecking -Global
+        Import-Module "${env:ProgramFiles(x86)}\Microsoft Dynamics NAV\$ShortVersion\$RTCFolder\Microsoft.Dynamics.NAV.Model.Tools.psd1" -Force -DisableNameChecking -Global
+        Import-Module "${env:ProgramFiles(x86)}\Microsoft Dynamics NAV\$ShortVersion\$RTCFolder\Microsoft.Dynamics.Nav.Apps.Tools.psd1" -Force -DisableNameChecking -Global
+        Import-Module "${env:ProgramFiles(x86)}\Microsoft Dynamics NAV\$ShortVersion\$RTCFolder\Microsoft.Dynamics.NAV.Apps.Management.psd1" -Force -DisableNameChecking -Global
     }
     $NAVServerModulePath = "$env:ProgramFiles\Microsoft Dynamics NAV\$ShortVersion\$ServiceFolder\Microsoft.Dynamics.Nav.Management.psm1"
-	Import-Module $NAVServerModulePath -Force -WarningAction SilentlyContinue | Out-Null
-    #Export-ModuleMember -Function *-* -Variable Nav*
+	Import-Module $NAVServerModulePath -Force -DisableNameChecking -Global
 }
