@@ -9,7 +9,7 @@
    
 #>
 
-function Import-NAVModule-INC {
+function Import-NAVModules-INC {
     [CmdLetBinding()]
     param(
         [Parameter(Mandatory=$true)]
