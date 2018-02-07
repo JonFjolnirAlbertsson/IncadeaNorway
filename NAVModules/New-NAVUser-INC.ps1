@@ -2,7 +2,7 @@
 {
     [CmdletBinding()]
     param(
-		[Parameter(Mandatory=$true, ValueFromPipelineByPropertyname=$true)]
+		[Parameter(Mandatory=$True, ValueFromPipeline=$True, ValueFromPipelineByPropertyName=$True, HelpMessage='What NAV Server Instance would you like to target?')]
         [System.String]
         [string] $NavServiceInstance,
 		[string] $User = "si-dev\nav_user", 
