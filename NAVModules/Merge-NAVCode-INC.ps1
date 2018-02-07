@@ -29,7 +29,8 @@ function Merge-NAVCode-INC
         [Switch] $JoinCopyResultFoldersBefore,
         [Switch] $OpenConflictFilesInKdiff,
         [Switch] $RemoveModifyFilesNotInTarget,
-        [Switch] $RemoveOriginalFilesNotInTarget
+        [Switch] $RemoveOriginalFilesNotInTarget,
+        [Switch] $CopyMerged2ToBeJoined
         )
     PROCESS
     {
@@ -216,10 +217,12 @@ function Merge-NAVCode-INC
                 {
                     Remove-ModifiedFilesNotInTarget -CompareObjectFilter $CompareObjectFilter -ModifiedFolder $DestinationModified -TargetFolder $DestinationTarget -WorkingFolderPath $WorkingFolderPath                        
                 }
-                write-host "Copy manually merged objects to the join folder" -foregroundcolor "white"
-                write-host "Copying files from the folder $Merged to the folder $JoinPath" -foregroundcolor "white"
-                get-childitem  -path $Merged   | where-object {$_.Name -like "*.TXT"} | Copy-Item -Destination $JoinPath
-
+                if ($CopyMerged2ToBeJoined)
+                {
+                    write-host "Copy manually merged objects to the join folder" -foregroundcolor "white"
+                    write-host "Copying files from the folder $Merged to the folder $JoinPath" -foregroundcolor "white"
+                    get-childitem  -path $Merged   | where-object {$_.Name -like "*.TXT"} | Copy-Item -Destination $JoinPath
+                }
                 write-host "Joining all files in the folder $JoinSource into the file $JoinDestination" -foregroundcolor "white"
                 write-host "The filter used to join files is $CompareObjectFilter" -foregroundcolor "white"
                 Join-NAVApplicationObjectFile -Source $JoinSource -Destination $JoinDestination -Force          
