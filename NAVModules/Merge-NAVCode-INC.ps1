@@ -1,19 +1,25 @@
-﻿<#
-.Synopsis
-   Split Original, Modified and Target object file. Creates Folder structure under the working folder
-.DESCRIPTION
-   Uses standard NAV upgrade objects functions. Join will copy .TXT objects from the Merge folder the
-.NOTES
+﻿    <#
+        .SYNOPSIS
+        Split Original, Modified and Target object file.
+        .DESCRIPTION
+        Split Original, Modified and Target object file. Creates Folder structure under the working folder and
+        Uses standard NAV upgrade objects functions. Join will copy .TXT objects from the Merge folder the
+         .EXAMPLE  
+        Example 1
+        Splitting Original, Modified and Target files to individua files.
+        Merge-NAVCode -WorkingFolderPath $WorkingFolder -OriginalFileName $OriginalObjectsPath -ModifiedFileName $ModifiedObjectsPath -TargetFileName $TargetObjectsPath -CompareObject $CompareObject -Split
+        Example 2
+        Join from ToBeJoined folder and creating the file all-merged-objects.txt under the working directory
+        Merge-NAVCode-INC -Join -WorkingFolderPath $WorkingFolder
    
-.PREREQUISITES
-   
-#>
-function Merge-NAVCode
+    #>
+function Merge-NAVCode-INC
 {
     [CmdletBinding()]
     param(
+        [Parameter(Mandatory=$true)]
         [string] $WorkingFolderPath, 
-        [string] $CompareObject = "*.TXT",
+        [string] $CompareObjectFilter = "*.TXT",
         [string] $OriginalFileName,
         [string] $ModifiedFileName,
         [string] $TargetFileName,
@@ -73,12 +79,12 @@ function Merge-NAVCode
             }
 
             #Set Source, modified, target and result values
-            $OriginalCompareObject = join-path $DestinationOriginal  $CompareObject
-            $ModifiedCompareObject = join-path $DestinationModified  $CompareObject
-            $TargetCompareObject = join-path $DestinationTarget  $CompareObject
+            $OriginalCompareObject = join-path $DestinationOriginal  $CompareObjectFilter
+            $ModifiedCompareObject = join-path $DestinationModified  $CompareObjectFilter
+            $TargetCompareObject = join-path $DestinationTarget  $CompareObjectFilter
             $DeltaUpdateObject = join-path $Delta  $UpdateObject
             $JoinPath = join-path $Merged  "ToBeJoined"
-            $JoinSource = join-path $JoinPath  $CompareObject
+            $JoinSource = join-path $JoinPath  $CompareObjectFilter
             $JoinDestination = join-path $WorkingFolderPath  "all-merged-objects.txt"
 
             if(!(Test-Path -Path $JoinPath )){
@@ -170,7 +176,7 @@ function Merge-NAVCode
                 {
                     get-childitem  -path $Result  | where-object {$_.Name -like "*.TXT"} | Move-Item -Destination $ResultMergedPath -Force | out-null
                 }
-                write-host "The filter used to merge files was $CompareObject"  -foregroundcolor "white" 
+                write-host "The filter used to merge files was $CompareObjectFilter"  -foregroundcolor "white" 
                 write-host "Below you can see were the source files come from ..."  -foregroundcolor "white" 
                 write-host $OriginalCompareObject  -foregroundcolor "white" 
                 write-host $ModifiedCompareObject  -foregroundcolor "white" 
@@ -205,18 +211,18 @@ function Merge-NAVCode
 
                 if ($RemoveOriginalFilesNotInTarget)
                 {
-                    Remove-OriginalFilesNotInTarget -CompareObjectFilter $CompareObject -OriginalFolder $DestinationOriginal -TargetFolder $DestinationTarget -WorkingFolderPath $WorkingFolderPath                    
+                    Remove-OriginalFilesNotInTarget -CompareObjectFilter $CompareObjectFilter -OriginalFolder $DestinationOriginal -TargetFolder $DestinationTarget -WorkingFolderPath $WorkingFolderPath                    
                 }
                 if ($RemoveModifyFilesNotInTarget)
                 {
-                    Remove-ModifiedFilesNotInTarget -CompareObjectFilter $CompareObject -ModifiedFolder $DestinationModified -TargetFolder $DestinationTarget -WorkingFolderPath $WorkingFolderPath                        
+                    Remove-ModifiedFilesNotInTarget -CompareObjectFilter $CompareObjectFilter -ModifiedFolder $DestinationModified -TargetFolder $DestinationTarget -WorkingFolderPath $WorkingFolderPath                        
                 }
                 write-host "Copy manually merged objects to the join folder" -foregroundcolor "white"
                 write-host "Copying files from the folder $Merged to the folder $JoinPath" -foregroundcolor "white"
                 get-childitem  -path $Merged   | where-object {$_.Name -like "*.TXT"} | Copy-Item -Destination $JoinPath
 
                 write-host "Joining all files in the folder $JoinSource into the file $JoinDestination" -foregroundcolor "white"
-                write-host "The filter used to join files is $CompareObject" -foregroundcolor "white"
+                write-host "The filter used to join files is $CompareObjectFilter" -foregroundcolor "white"
                 Join-NAVApplicationObjectFile -Source $JoinSource -Destination $JoinDestination -Force          
             }
             write-host "Execution finished."
