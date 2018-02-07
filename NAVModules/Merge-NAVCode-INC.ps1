@@ -5,12 +5,11 @@
         Split Original, Modified and Target object file. Creates Folder structure under the working folder and
         Uses standard NAV upgrade objects functions. Join will copy .TXT objects from the Merge folder the
          .EXAMPLE  
-        Example 1
-        Splitting Original, Modified and Target files to individua files.
         Merge-NAVCode -WorkingFolderPath $WorkingFolder -OriginalFileName $OriginalObjectsPath -ModifiedFileName $ModifiedObjectsPath -TargetFileName $TargetObjectsPath -CompareObject $CompareObject -Split
-        Example 2
-        Join from ToBeJoined folder and creating the file all-merged-objects.txt under the working directory
+        Splitting Original, Modified and Target files to individua files.
+         .EXAMPLE         
         Merge-NAVCode-INC -Join -WorkingFolderPath $WorkingFolder
+        Join from ToBeJoined folder and creating the file all-merged-objects.txt under the working directory
    
     #>
 function Merge-NAVCode-INC
