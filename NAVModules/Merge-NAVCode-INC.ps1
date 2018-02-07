@@ -209,15 +209,15 @@ function Merge-NAVCode-INC
                     get-childitem  -path $Result  | where-object {$_.Name -like "*.TXT"} | Move-Item -Destination $JoinPath -Force | out-null
                 }
 
-                if ($RemoveOriginalFilesNotInTarget)
+                if($RemoveOriginalFilesNotInTarget)
                 {
                     Remove-OriginalFilesNotInTarget -CompareObjectFilter $CompareObjectFilter -OriginalFolder $DestinationOriginal -TargetFolder $DestinationTarget -WorkingFolderPath $WorkingFolderPath                    
                 }
-                if ($RemoveModifyFilesNotInTarget)
+                if($RemoveModifyFilesNotInTarget)
                 {
                     Remove-ModifiedFilesNotInTarget -CompareObjectFilter $CompareObjectFilter -ModifiedFolder $DestinationModified -TargetFolder $DestinationTarget -WorkingFolderPath $WorkingFolderPath                        
                 }
-                if ($CopyMerged2ToBeJoined)
+                if($CopyMerged2ToBeJoined)
                 {
                     write-host "Copy manually merged objects to the join folder" -foregroundcolor "white"
                     write-host "Copying files from the folder $Merged to the folder $JoinPath" -foregroundcolor "white"
