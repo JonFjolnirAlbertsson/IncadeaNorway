@@ -12,13 +12,21 @@ function NotepadPlus
 {
     [CmdletBinding()]
     param(
-        $ArgumentList
+        [string] $ArgumentList = "",
+        [Switch] $Compare
         )
     PROCESS
     {
         try
-        {       
-            $NotepadPlus = Join-Path 'C:\Program Files (x86)\Notepad++' 'notepad++.exe'     
+        {   
+            if($Compare)
+            {    
+                
+                $NotepadPlus = Join-Path 'C:\Program Files (x86)\Notepad++\plugins\ComparePlugin\' 'compare.exe'
+            }else
+            {
+                $NotepadPlus = Join-Path 'C:\Program Files (x86)\Notepad++' 'notepad++.exe'
+            }     
             if($ArgumentList)
             {
                 #& $NotepadPlus $ArgumentList

@@ -1,14 +1,14 @@
 ﻿<#
 .Synopsis
-   Runs Kdiff
+   Runs Beyond Compare 3
 .DESCRIPTION
-   Runs Kdiff
+   Runs Beyond Compare 3
 .NOTES
    
 .PREREQUISITES
    
 #>
-function Kdiff
+function BCompare
 {
     [CmdletBinding()]
     param(
@@ -18,15 +18,17 @@ function Kdiff
     {
         try
         { 
-            $Kdiff = Join-Path 'C:\Program Files\KDiff3' 'kdiff3.exe'
+            #$ApplicaitonFile = 'BComp.exe'		
+            $ApplicaitonFile = 'BCompare.exe'		
+            $BeyondCompare3 = Join-Path 'C:\Program Files (x86)\Beyond Compare 3' $ApplicaitonFile
              
             if($ArgumentList)
             {
-                Start-Process -FilePath $Kdiff -ArgumentList $ArgumentList          
+                Start-Process -FilePath $BeyondCompare3 $ArgumentList          
             }
             else
             {
-                & $Kdiff   
+                & $BeyondCompare3   
             }
             
         }

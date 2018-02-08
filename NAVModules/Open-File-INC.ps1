@@ -22,6 +22,7 @@ function Open-File-INC
         [Switch] $OpenConflict,
         [Switch] $OpenToBeJoined,
         [Switch] $OpenInNotepadPlus,
+        [Switch] $OpenInBCompare,
         [Switch] $OpenInKdiff,
         [Switch] $OpenToMergeInKdiff,
 		[Switch] $UseWaldoFolders
@@ -166,7 +167,7 @@ function Open-File-INC
 
             if($OpenInNotepadPlus)
             { 
-                NotepadPlus -ArgumentList $FileArgs      
+                NotepadPlus -ArgumentList $FileArgs #-Compare      
             }
 
             if($OpenInKdiff -or $OpenToMergeInKdiff)
@@ -180,6 +181,10 @@ function Open-File-INC
                 {
                     Kdiff -ArgumentList $KdiffFileArgs 
                 }                                                  
+            }
+            if($OpenInBCompare)
+            {
+                BCompare -ArgumentList $KdiffFileArgs                                                  
             }
         }
         catch [Exception]
