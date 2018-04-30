@@ -25,7 +25,7 @@ PS >"
 if (-not($psise)) {
     break
 } 
-$gitpath =  "' + (Join-Path (Split-Path -Path $PSScriptRoot -Qualifier) 'Git') + '"
+$gitpath =  "' + (Split-Path -Path $PSScriptRoot) + '"
 $scriptfolderpath = "' + $PSScriptRoot + '"   
 $code =
 {
@@ -81,7 +81,7 @@ $psISE.CurrentPowerShellTab.AddOnsMenu.Submenus.Add(''Load NAV 2017 CmdLets'',$c
 
 $code =
 {
-  #Start ''C:\GitHub\Cloud.Ready.Software.PowerShell\PSModules''
+  #Start "$gitpath\Cloud.Ready.Software.PowerShell\PSModules"
   Start $scriptfolderpath
 }
 $psISE.CurrentPowerShellTab.AddOnsMenu.Submenus.Add(''Open CRS scripts folder'',$code,$null)
